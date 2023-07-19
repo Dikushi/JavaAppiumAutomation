@@ -1,2 +1,2 @@
-# java-appium-automation
+# Java Appium Automation
 Обучение: "Автоматизатор мобильных приложений"
