@@ -156,6 +156,52 @@ public class FirstTest {
         Assert.assertTrue("Is not visible!", titleElement.isDisplayed());
     }
 
+    @Test
+    public void testCancelResultSearch() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Onboarding Skip Button",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        WebElement resultsOfSearch = waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Cannot find result of search",
+                15
+        );
+
+        Assert.assertNotEquals(
+                "Result of search more then zero results",
+                0,
+                resultsOfSearch.findElements(By.className("android.view.ViewGroup")).size()
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        Assert.assertEquals(
+                "Result of search more then zero results",
+                0,
+                resultsOfSearch.findElements(By.className("android.view.ViewGroup")).size()
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait webDriverWait = new WebDriverWait(driver, timeoutInSeconds);
         webDriverWait.withMessage(errorMessage + "\n");
