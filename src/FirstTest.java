@@ -74,6 +74,12 @@ public class FirstTest {
                 5
         );
 
+        assertElementHasText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_container']/android.widget.TextView"),
+                "Search Wikipedia",
+                "Placeholder text for 'Search' unexpected!"
+        );
+
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
@@ -178,5 +184,11 @@ public class FirstTest {
         WebElement webElement = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         webElement.clear();
         return webElement;
+    }
+
+    private boolean assertElementHasText(By by, String expectedText, String errorMessage) {
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 5);
+        webDriverWait.withMessage(errorMessage + "\n");
+        return webDriverWait.until(ExpectedConditions.textToBe(by, expectedText));
     }
 }
