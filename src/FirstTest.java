@@ -149,7 +149,7 @@ public class FirstTest {
         );
 
         WebElement titleElement = waitForElementPresent(
-                By.xpath("//android.view.View[@content-desc='Java (programming language)']"),
+                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
                 "Cannot find article title",
                 15
         );
