@@ -196,7 +196,7 @@ public class FirstTest {
         );
 
         Assert.assertEquals(
-                "Result of search more then zero results",
+                "Result of search is zero results",
                 0,
                 resultsOfSearch.findElements(By.className("android.view.ViewGroup")).size()
         );
