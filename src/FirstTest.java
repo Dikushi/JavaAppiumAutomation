@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -200,6 +201,43 @@ public class FirstTest {
                 0,
                 resultsOfSearch.findElements(By.className("android.view.ViewGroup")).size()
         );
+    }
+
+    @Test
+    public void testCheckTextInSearchResults() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Onboarding Skip Button",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        WebElement resultsOfSearch = waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Cannot find result of search",
+                15
+        );
+
+        List<WebElement> webElementList = resultsOfSearch
+                .findElements(By.id("org.wikipedia:id/page_list_item_title"));
+
+        for (WebElement webElement : webElementList) {
+            Assert.assertTrue(
+                    "Result of search contains result without 'java' text.",
+                    webElement.getText().toLowerCase().contains("java"));
+        }
     }
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
