@@ -665,6 +665,47 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testOpenArticleAndAssertTitle() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Onboarding Skip Button",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']" +
+                        "//*[@text='Object-oriented programming language']"),
+                "Cannot find result",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+                "Cannot find title of article",
+                15
+        );
+
+        String locatorOfTitle = "//*[@resource-id='pcs']//*[contains(@resource-id,'title')]";
+        assertElementPresent(
+                By.xpath(locatorOfTitle),
+                "Title is not displayed in Article"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait webDriverWait = new WebDriverWait(driver, timeoutInSeconds);
         webDriverWait.withMessage(errorMessage + "\n");
@@ -769,5 +810,9 @@ public class FirstTest {
     private String waitForElementAndGetAttribute(By by, String attribute, String errorMessage, long timeoutInSeconds) {
         WebElement webElement = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         return webElement.getAttribute(attribute);
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        Assert.assertTrue(errorMessage, driver.findElement(by).isDisplayed());
     }
 }
