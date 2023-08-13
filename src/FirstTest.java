@@ -462,7 +462,6 @@ public class FirstTest {
                 "Cannot find search input",
                 5
         );
-
     }
 
     @Test
@@ -631,7 +630,6 @@ public class FirstTest {
                         0);
                 return;
             }
-
             swipeUpQuick();
             ++alreadySwiped;
         }
