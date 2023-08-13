@@ -547,6 +547,124 @@ public class FirstTest {
         }
     }
 
+    @Test
+    public void testSaveToFavoriteTwoArticles() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                "Cannot find Onboarding Skip Button",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']" +
+                        "//*[@text='Object-oriented programming language']"),
+                "Cannot find results",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "Cannot find button 'Add to List'",
+                5
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/text_input"),
+                "Cannot find input to set name of articles folder",
+                5
+        );
+
+        String nameOfFolder = "Ex5. Save Two Articles.";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                nameOfFolder,
+                "Cannot put text into articles folder input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='OK']"),
+                "Cannot press 'OK' button",
+                5
+        );
+
+        driver.navigate().back();
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']" +
+                        "//*[@text='High-level programming language']"),
+                "Cannot find results",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "Cannot find button 'Add to List'",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='" + nameOfFolder + "']"),
+                "Cannot press to already exist folder",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "Cannot find button 'View list'",
+                10
+        );
+
+        swipeElementToLeft(
+                By.xpath("//*[@text='JavaScript']"),
+                "Cannot find saved article"
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Article is not present",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Article is not present",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
+                "Cannot find title of article",
+                15
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait webDriverWait = new WebDriverWait(driver, timeoutInSeconds);
         webDriverWait.withMessage(errorMessage + "\n");
