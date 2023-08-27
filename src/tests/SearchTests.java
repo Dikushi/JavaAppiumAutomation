@@ -9,8 +9,6 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
-
 public class SearchTests extends CoreTestCase {
 
     MainPageObject mainPageObject;
@@ -67,43 +65,22 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelResultSearch() {
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "Cannot find Onboarding Skip Button"
-        );
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
 
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find 'Search Wikipedia' input"
-        );
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.waitForSearchResult("Object-oriented programming language");
 
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Java",
-                "Cannot find search input"
-        );
-
-        WebElement resultsOfSearch = mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/search_results_list"),
-                "Cannot find result of search",
-                15
-        );
-
-        assertNotEquals(
+        assertTrue(
                 "Result of search more then zero results",
-                0,
-                resultsOfSearch.findElements(By.className("android.view.ViewGroup")).size()
+                searchPageObject.getAmountOfResultListElements() > 0
         );
 
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search"
-        );
+        searchPageObject.clickCancelSearch();
 
-        assertEquals(
+        assertTrue(
                 "Result of search is zero results",
-                0,
-                resultsOfSearch.findElements(By.className("android.view.ViewGroup")).size()
+                searchPageObject.getAmountOfResultListElements() == 0
         );
     }
 
