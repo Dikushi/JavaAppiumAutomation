@@ -9,16 +9,16 @@ public class MyListsPageObject extends MainPageObject {
             FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}'",
             ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
 
+    public MyListsPageObject(AppiumDriver driver) {
+        super(driver);
+    }
+
     private static String getFolderXpathByName(String nameOfFolder) {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", nameOfFolder);
     }
 
     private static String getSavedArticleXpathByTitle(String articleTitle) {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", articleTitle);
-    }
-
-    public MyListsPageObject(AppiumDriver driver) {
-        super(driver);
     }
 
     public void openFolderByName(String nameOfFolder) {

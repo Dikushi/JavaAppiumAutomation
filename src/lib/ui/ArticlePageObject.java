@@ -14,13 +14,13 @@ public class ArticlePageObject extends MainPageObject {
             INPUT_NAME_FOR_FOLDER = "org.wikipedia:id/text_input",
             OK_BUTTON_FOR_CREATE_LIST = "//*[@text='OK']";
 
+    public ArticlePageObject(AppiumDriver driver) {
+        super(driver);
+    }
+
     /* TEMPLATES METHODS */
     private static String getTitleElement(String substring) {
         return TITLE.replace("{SUBSTRING}", substring);
-    }
-
-    public ArticlePageObject(AppiumDriver driver) {
-        super(driver);
     }
 
     public WebElement waitForTitleElement(String substring) {

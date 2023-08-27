@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -21,6 +20,6 @@ public class MainClassTest {
 
     @Test
     public void testGetLocalNumber() {
-        assertEquals("Значение метода getLocalNumber не равно 14",14, mainClass.getLocalNumber());
+        assertEquals("Значение метода getLocalNumber не равно 14", 14, mainClass.getLocalNumber());
     }
 }
