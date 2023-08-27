@@ -21,6 +21,7 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+
         WebElement articleTitle = articlePageObject.waitForTitleElement("Java");
 
         assertTrue("Is not visible!", articleTitle.isDisplayed());
@@ -35,6 +36,7 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.clickByArticleWithSubstring("Appium");
 
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+
         articlePageObject.waitForTitleElement("Appium");
         articlePageObject.swipeToFooter();
     }

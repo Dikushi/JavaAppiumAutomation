@@ -24,10 +24,12 @@ public class MyListsTests extends CoreTestCase {
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+
         articlePageObject.waitForTitleElement(articleTitle);
         articlePageObject.addArticleToList(nameOfFolder);
 
         MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+
         myListsPageObject.swipeByArticleToDelete("Java (programming language)");
     }
 

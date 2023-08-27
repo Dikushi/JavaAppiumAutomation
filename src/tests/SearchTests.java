@@ -18,6 +18,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
+
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.waitForSearchResult("Object-oriented programming language");
@@ -37,6 +38,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmountOfNotEmptySearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
+
         searchPageObject.initSearchInput();
 
         String searchLine = "Linkin Park discography";
@@ -53,6 +55,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmountOfEmptySearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
+
         searchPageObject.initSearchInput();
 
         String searchLine = "zxcvasdfqwer";
