@@ -2,6 +2,8 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -9,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class MainPageObject {
@@ -55,7 +58,7 @@ public class MainPageObject {
         return webDriverWait.until(ExpectedConditions.textToBe(by, expectedText));
     }
 
-    public void swipeUp(int timeOfSwipe) {
+    public void swipeUp(WaitOptions timeOfSwipe) {
         TouchAction touchAction = new TouchAction(driver);
         Dimension size = driver.manage().window().getSize();
         int x = size.width / 2;
@@ -63,9 +66,9 @@ public class MainPageObject {
         int end_y = (int) (size.height * 0.2);
 
         touchAction
-                .press(x, start_y)
+                .press(PointOption.point(x, start_y))
                 .waitAction(timeOfSwipe)
-                .moveTo(x, end_y)
+                .moveTo(PointOption.point(x, end_y))
                 .release()
                 .perform();
     }
@@ -81,15 +84,15 @@ public class MainPageObject {
 
         TouchAction touchAction = new TouchAction(driver);
         touchAction
-                .press(right_x, middle_y)
-                .waitAction(300)
-                .moveTo(left_x, middle_y)
+                .press(PointOption.point(right_x, middle_y))
+                .waitAction(new WaitOptions().withDuration(Duration.ofMillis(300)))
+                .moveTo(PointOption.point(left_x, middle_y))
                 .release()
                 .perform();
     }
 
     public void swipeUpQuick() {
-        swipeUp(200);
+        swipeUp(WaitOptions.waitOptions(Duration.ofMillis(300)));
     }
 
     public void swipeUpToFindElement(By by, String errorMessage, int maxSwipes) {

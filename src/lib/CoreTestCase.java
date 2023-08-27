@@ -7,6 +7,7 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
+import java.time.Duration;
 
 public class CoreTestCase extends TestCase {
 
@@ -48,7 +49,7 @@ public class CoreTestCase extends TestCase {
         driver.rotate(ScreenOrientation.LANDSCAPE);
     }
 
-    protected void backgroundApp(int seconds) {
+    protected void backgroundApp(Duration seconds) {
         driver.runAppInBackground(seconds);
     }
 
