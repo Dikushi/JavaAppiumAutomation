@@ -12,7 +12,8 @@ public class ArticlePageObject extends MainPageObject {
             SAVE_TO_LIST_BUTTON = "org.wikipedia:id/page_save",
             ACTION_BUTTON_AFTER_SAVE = "org.wikipedia:id/snackbar_action",
             INPUT_NAME_FOR_FOLDER = "org.wikipedia:id/text_input",
-            OK_BUTTON_FOR_CREATE_LIST = "//*[@text='OK']";
+            OK_BUTTON_FOR_CREATE_LIST = "//*[@text='OK']",
+            TITLE_LOCATOR = "//*[@resource-id='pcs']//*[contains(@resource-id,'title')]";
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -89,6 +90,13 @@ public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndClick(
                 By.id(ACTION_BUTTON_AFTER_SAVE),
                 "Cannot find button 'View List'"
+        );
+    }
+
+    public void assertTitleIsPresent() {
+        this.assertElementPresent(
+                By.xpath(TITLE_LOCATOR),
+                "Title is not displayed in Article"
         );
     }
 }
