@@ -26,7 +26,7 @@ public class SearchPageObject extends MainPageObject {
 
     public void initSearchInput() {
         this.waitForElementPresent(By.id(SEARCH_INIT_ELEMENT), "Cannot find search input after clicking search init element", 5);
-        this.waitForElementAndClick(By.id(SEARCH_INIT_ELEMENT), "Cannot find and click search init element", 5);
+        this.waitForElementAndClick(By.id(SEARCH_INIT_ELEMENT), "Cannot find and click search init element");
     }
 
     public void waitForCancelButtonToAppear() {
@@ -38,12 +38,12 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public void clickCancelSearch() {
-        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
+        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button");
     }
 
     public void typeSearchLine(String searchLine) {
-        this.waitForElementAndClick(By.xpath(SEARCH_INPUT), "Cannot find and click search input", 5);
-        this.waitForElementAndSendKeys(By.xpath(SEARCH_INPUT), searchLine, "Cannot find and type into search input", 5);
+        this.waitForElementAndClick(By.xpath(SEARCH_INPUT), "Cannot find and click search input");
+        this.waitForElementAndSendKeys(By.xpath(SEARCH_INPUT), searchLine, "Cannot find and type into search input");
     }
 
     public void waitForSearchResult(String substring) {
@@ -53,7 +53,7 @@ public class SearchPageObject extends MainPageObject {
 
     public void clickByArticleWithSubstring(String substring) {
         String searchResultXpath = getResultSearchElement(substring);
-        this.waitForElementAndClick(By.xpath(searchResultXpath), "Cannot find and click search result with substring " + substring, 10);
+        this.waitForElementAndClick(By.xpath(searchResultXpath), "Cannot find and click search result with substring " + substring);
     }
 
     public int getAmountOfFindArticles() {

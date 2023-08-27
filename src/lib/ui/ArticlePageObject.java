@@ -39,14 +39,12 @@ public class ArticlePageObject extends MainPageObject {
     public void addArticleToList(String nameOfFolder) {
         this.waitForElementAndClick(
                 By.id(SAVE_TO_LIST_BUTTON),
-                "Cannot find option to add article to reading list",
-                5
+                "Cannot find option to add article to reading list"
         );
 
         this.waitForElementAndClick(
                 By.id(ACTION_BUTTON_AFTER_SAVE),
-                "Cannot find button 'Add to List'",
-                5
+                "Cannot find button 'Add to List'"
         );
 
         this.waitForElementAndClear(
@@ -58,20 +56,17 @@ public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndSendKeys(
                 By.id(INPUT_NAME_FOR_FOLDER),
                 nameOfFolder,
-                "Cannot put text into articles folder input",
-                5
+                "Cannot put text into articles folder input"
         );
 
         this.waitForElementAndClick(
                 By.xpath(OK_BUTTON_FOR_CREATE_LIST),
-                "Cannot press 'OK' button",
-                5
+                "Cannot press 'OK' button"
         );
 
         this.waitForElementAndClick(
                 By.id(ACTION_BUTTON_AFTER_SAVE),
-                "Cannot find button 'Add to List'",
-                5
+                "Cannot find button 'Add to List'"
         );
     }
 }

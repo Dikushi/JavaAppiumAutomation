@@ -62,8 +62,6 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.assertThereIsNoResultOfSearch();
     }
 
-
-
     @Test
     public void testCancelResultSearch() {
         mainPageObject.waitForElementAndClick(
