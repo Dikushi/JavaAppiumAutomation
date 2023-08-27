@@ -2,6 +2,11 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+import static junit.framework.TestCase.assertTrue;
 
 public class SearchPageObject extends MainPageObject {
 
@@ -84,5 +89,23 @@ public class SearchPageObject extends MainPageObject {
 
     public int getAmountOfResultListElements() {
         return this.getAmountOfElements(By.xpath(SEARCH_RESULTS_LIST_ELEMENT));
+    }
+
+    public List<WebElement> getListOfResultElements() {
+        WebElement resultsOfSearch = this.waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Cannot find result of search",
+                15
+        );
+
+        return resultsOfSearch.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+    }
+
+    public void assertListOfResultElementsHaveText(List<WebElement> listOfResultElements, String text) {
+        for (WebElement resultElement : listOfResultElements) {
+            assertTrue(
+                    String.format("Result of search contains result without '%s' text.", text),
+                    resultElement.getText().toLowerCase().contains(text));
+        }
     }
 }

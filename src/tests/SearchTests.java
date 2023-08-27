@@ -4,7 +4,6 @@ import lib.CoreTestCase;
 import lib.ui.MainPageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -86,35 +85,14 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCheckTextInSearchResults() {
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "Cannot find Onboarding Skip Button"
-        );
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
 
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find 'Search Wikipedia' input"
-        );
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.waitForSearchResult("Object-oriented programming language");
 
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Java",
-                "Cannot find search input"
-        );
+        List<WebElement> listOfResultElements = searchPageObject.getListOfResultElements();
 
-        WebElement resultsOfSearch = mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/search_results_list"),
-                "Cannot find result of search",
-                15
-        );
-
-        List<WebElement> webElementList = resultsOfSearch
-                .findElements(By.id("org.wikipedia:id/page_list_item_title"));
-
-        for (WebElement webElement : webElementList) {
-            assertTrue(
-                    "Result of search contains result without 'java' text.",
-                    webElement.getText().toLowerCase().contains("java"));
-        }
+        searchPageObject.assertListOfResultElementsHaveText(listOfResultElements, "Java");
     }
 }
