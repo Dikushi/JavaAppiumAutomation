@@ -14,7 +14,6 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results']",
             SEARCH_LINE_LOCATOR = "//*[@resource-id='org.wikipedia:id/search_results_list']//android.widget.ImageView";
 
-
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
     }
