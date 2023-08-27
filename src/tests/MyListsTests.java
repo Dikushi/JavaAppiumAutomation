@@ -2,21 +2,17 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
-import lib.ui.MainPageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class MyListsTests extends CoreTestCase {
-
-    MainPageObject mainPageObject;
 
     @Test
     public void testSaveFirstArticleToMyList() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
 
-        String articleTitle = "Java";
+        String articleTitle = "Java (programming language)";
         String nameOfFolder = "Learning programming";
 
         searchPageObject.initSearchInput();
@@ -35,105 +31,33 @@ public class MyListsTests extends CoreTestCase {
 
     @Test
     public void testSaveToFavoriteTwoArticles() {
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "Cannot find Onboarding Skip Button"
-        );
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
 
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input"
-        );
-
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Java",
-                "Cannot find search input"
-        );
-
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']" +
-                        "//*[@text='Object-oriented programming language']"),
-                "Cannot find results"
-        );
-
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/page_save"),
-                "Cannot find option to add article to reading list"
-        );
-
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "Cannot find button 'Add to List'"
-        );
-
-        mainPageObject.waitForElementAndClear(
-                By.id("org.wikipedia:id/text_input"),
-                "Cannot find input to set name of articles folder",
-                5
-        );
-
+        String firstArticleTitle = "Java (programming language)";
+        String secondArticleTitle = "JavaScript";
         String nameOfFolder = "Ex5. Save Two Articles.";
 
-        mainPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/text_input"),
-                nameOfFolder,
-                "Cannot put text into articles folder input"
-        );
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='OK']"),
-                "Cannot press 'OK' button"
-        );
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
 
-        driver.navigate().back();
+        articlePageObject.addArticleToList(nameOfFolder);
 
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']" +
-                        "//*[@text='High-level programming language']"),
-                "Cannot find results"
-        );
+        this.navigateBack();
+        this.navigateBack();
 
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/page_save"),
-                "Cannot find option to add article to reading list"
-        );
+        searchPageObject.clickByArticleWithSubstring("High-level programming language");
 
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "Cannot find button 'Add to List'"
-        );
+        articlePageObject.addArticleToListAlreadyCreated(nameOfFolder);
 
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='" + nameOfFolder + "']"),
-                "Cannot press to already exist folder"
-        );
+        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
 
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "Cannot find button 'View list'"
-        );
+        myListsPageObject.swipeByArticleToDelete(secondArticleTitle);
+        myListsPageObject.waitForArticleToDisappearByTitle(secondArticleTitle);
+        myListsPageObject.clickOnArticleFromList(firstArticleTitle);
 
-        mainPageObject.swipeElementToLeft(
-                By.xpath("//*[@text='JavaScript']"),
-                "Cannot find saved article"
-        );
-
-        mainPageObject.waitForElementPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Article is not present",
-                5
-        );
-
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Article is not present"
-        );
-
-        mainPageObject.waitForElementPresent(
-                By.xpath("//android.widget.TextView[@text='Java (programming language)']"),
-                "Cannot find title of article",
-                15
-        );
+        articlePageObject.waitForTitleElement(firstArticleTitle);
     }
 }

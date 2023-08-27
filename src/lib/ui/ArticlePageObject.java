@@ -69,4 +69,26 @@ public class ArticlePageObject extends MainPageObject {
                 "Cannot find button 'Add to List'"
         );
     }
+
+    public void addArticleToListAlreadyCreated(String nameOfFolder) {
+        this.waitForElementAndClick(
+                By.id(SAVE_TO_LIST_BUTTON),
+                "Cannot find option to add article to reading list"
+        );
+
+        this.waitForElementAndClick(
+                By.id(ACTION_BUTTON_AFTER_SAVE),
+                "Cannot find button 'Add to List'"
+        );
+
+        this.waitForElementAndClick(
+                By.xpath("//*[@text='" + nameOfFolder + "']"),
+                "Cannot press to already exist folder"
+        );
+
+        this.waitForElementAndClick(
+                By.id(ACTION_BUTTON_AFTER_SAVE),
+                "Cannot find button 'View List'"
+        );
+    }
 }

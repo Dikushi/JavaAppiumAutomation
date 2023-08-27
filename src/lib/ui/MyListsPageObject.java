@@ -52,4 +52,11 @@ public class MyListsPageObject extends MainPageObject {
                 15
         );
     }
+
+    public void clickOnArticleFromList(String articleTitle) {
+        this.waitForElementAndClick(
+                By.xpath(getSavedArticleXpathByTitle(articleTitle)),
+                "Cannot find article to click by title " + articleTitle
+        );
+    }
 }

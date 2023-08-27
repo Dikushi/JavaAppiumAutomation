@@ -51,4 +51,8 @@ public class CoreTestCase extends TestCase {
     protected void backgroundApp(int seconds) {
         driver.runAppInBackground(seconds);
     }
+
+    protected void navigateBack() {
+        driver.navigate().back();
+    }
 }
