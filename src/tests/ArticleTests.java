@@ -18,7 +18,7 @@ public class ArticleTests extends CoreTestCase {
 
         ArticlePageObject articlePageObject = new ArticlePageObject(driver);
 
-        WebElement articleTitle = articlePageObject.waitForTitleElement("Java");
+        WebElement articleTitle = articlePageObject.waitForTitleElement("Java (programming language)");
 
         assertTrue("Is not visible!", articleTitle.isDisplayed());
     }

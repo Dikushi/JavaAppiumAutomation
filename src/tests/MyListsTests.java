@@ -47,6 +47,7 @@ public class MyListsTests extends CoreTestCase {
 
         this.navigateBack();
         this.navigateBack();
+        this.navigateBack();
 
         searchPageObject.clickByArticleWithSubstring("High-level programming language");
 

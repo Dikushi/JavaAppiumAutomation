@@ -90,6 +90,6 @@ public class SearchTests extends CoreTestCase {
 
         List<WebElement> listOfResultElements = searchPageObject.getListOfResultElements();
 
-        searchPageObject.assertListOfResultElementsHaveText(listOfResultElements, "Java");
+        searchPageObject.assertListOfResultElementsHaveText(listOfResultElements, "java");
     }
 }
