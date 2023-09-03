@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -11,7 +12,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -20,7 +21,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -31,7 +32,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
 
@@ -48,7 +49,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
 
@@ -61,7 +62,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelResultSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -82,7 +83,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCheckTextInSearchResults() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");

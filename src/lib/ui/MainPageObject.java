@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -86,12 +87,17 @@ public class MainPageObject {
         int middle_y = (upper_y + lower_y) / 2;
 
         TouchAction touchAction = new TouchAction(driver);
-        touchAction
-                .press(PointOption.point(right_x, middle_y))
-                .waitAction(new WaitOptions().withDuration(Duration.ofMillis(300)))
-                .moveTo(PointOption.point(left_x, middle_y))
-                .release()
-                .perform();
+        touchAction.press(PointOption.point(right_x, middle_y));
+        touchAction.waitAction(new WaitOptions().withDuration(Duration.ofMillis(300)));
+
+        if (Platform.getInstance().isAndroid()) {
+            touchAction.moveTo(PointOption.point(left_x, middle_y));
+        } else {
+            int offsetX = (-1 * webElement.getSize().getWidth());
+            touchAction.moveTo(PointOption.point(offsetX, 0));
+        }
+        touchAction.release();
+        touchAction.perform();
     }
 
     public void swipeUpQuick() {
@@ -114,6 +120,28 @@ public class MainPageObject {
         }
     }
 
+    public boolean isElementLocatedOnTheScreen(String locator) {
+        int elementLocationByY = this.waitForElementPresent(locator, "Cannot find element by locator", Duration.ofSeconds(5))
+                .getLocation()
+                .getY();
+
+        int screenSizeByY = driver.manage().window().getSize().getHeight();
+        return elementLocationByY < screenSizeByY;
+    }
+
+    public void swipeUpTillElementAppear(String locator, String errorMessage, int maxSwipes) {
+        int alreadySwiped = 0;
+
+        while (!this.isElementLocatedOnTheScreen(locator)) {
+            if (alreadySwiped > maxSwipes) {
+                Assert.assertTrue(errorMessage, this.isElementLocatedOnTheScreen(locator));
+            }
+
+            swipeUpQuick();
+            ++alreadySwiped;
+        }
+    }
+
     public int getAmountOfElements(String locator) {
         By by = this.getLocatorByString(locator);
         List elements = driver.findElements(by);
@@ -126,6 +154,21 @@ public class MainPageObject {
             String defaultMessage = "An element '" + locator + "' supposed to be not present";
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
+    }
+
+    public void clickElementToTheRightUpperCorner(String locator, String errorMessage) {
+        WebElement webElement = this.waitForElementPresent(locator + "/..", errorMessage, Duration.ofSeconds(5));
+        int rightX = webElement.getLocation().getX();
+        int upperY = webElement.getLocation().getY();
+        int lowerY = upperY + webElement.getSize().getHeight();
+        int middleY = (upperY + lowerY) / 2;
+        int width = webElement.getSize().getWidth();
+
+        int pointToClickX = (rightX + width) - 3;
+        int pointToClickY = middleY;
+
+        TouchAction touchAction = new TouchAction(driver);
+        touchAction.tap(PointOption.point(pointToClickX, pointToClickY)).perform();
     }
 
     public String waitForElementAndGetAttribute(String locator, String attribute, String errorMessage, long timeoutInSeconds) {

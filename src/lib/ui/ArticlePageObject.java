@@ -1,20 +1,21 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
 
-    private static final String
-            TITLE = "xpath://*[@resource-id='pcs']//android.widget.TextView[@text='{SUBSTRING}']",
-            FOOTER_ELEMENT = "xpath://*[@text='View article in browser']",
-            SAVE_TO_LIST_BUTTON = "id:org.wikipedia:id/page_save",
-            ACTION_BUTTON_AFTER_SAVE = "id:org.wikipedia:id/snackbar_action",
-            INPUT_NAME_FOR_FOLDER = "id:org.wikipedia:id/text_input",
-            OK_BUTTON_FOR_CREATE_LIST = "xpath://*[@text='OK']",
-            TITLE_LOCATOR = "xpath://*[@resource-id='pcs']//*[contains(@resource-id,'title')]";
+    protected static String
+            TITLE,
+            FOOTER_ELEMENT,
+            SAVE_TO_LIST_BUTTON,
+            ACTION_BUTTON_AFTER_SAVE,
+            INPUT_NAME_FOR_FOLDER,
+            OK_BUTTON_FOR_CREATE_LIST,
+            TITLE_LOCATOR;
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -31,11 +32,17 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public void swipeToFooter() {
-        this.swipeUpToFindElement(
-                FOOTER_ELEMENT,
-                "Cannot find the end of article",
-                20
-        );
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    40
+            );
+        } else {
+            this.swipeUpTillElementAppear(FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    40);
+        }
     }
 
     public void addArticleToList(String nameOfFolder) {
@@ -99,5 +106,11 @@ public class ArticlePageObject extends MainPageObject {
                 TITLE_LOCATOR,
                 "Title is not displayed in Article"
         );
+    }
+
+    public void addArticlesToMySaved() {
+        this.waitForElementAndClick(
+                SAVE_TO_LIST_BUTTON,
+                "Cannot find and click 'Save to list' button");
     }
 }
