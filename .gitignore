@@ -4,3 +4,5 @@ out
 libs
 apks
 apps
+target
+ci-scripts
