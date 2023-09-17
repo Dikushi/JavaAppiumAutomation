@@ -1,8 +1,8 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.time.Duration;
 
@@ -15,9 +15,10 @@ abstract public class ArticlePageObject extends MainPageObject {
             ACTION_BUTTON_AFTER_SAVE,
             INPUT_NAME_FOR_FOLDER,
             OK_BUTTON_FOR_CREATE_LIST,
-            TITLE_LOCATOR;
+            TITLE_LOCATOR,
+            OPTIONS_REMOVE_FROM_MY_LIST_BUTTON;
 
-    public ArticlePageObject(AppiumDriver driver) {
+    public ArticlePageObject(RemoteWebDriver driver) {
         super(driver);
     }
 
@@ -38,8 +39,13 @@ abstract public class ArticlePageObject extends MainPageObject {
                     "Cannot find the end of article",
                     40
             );
-        } else {
+        } else if (Platform.getInstance().isIOS()) {
             this.swipeUpTillElementAppear(FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    40);
+        } else {
+            this.scrollWebPageTillElementNotVisible(
+                    FOOTER_ELEMENT,
                     "Cannot find the end of article",
                     40);
         }
@@ -109,8 +115,25 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public void addArticlesToMySaved() {
+        if (Platform.getInstance().isMW()) {
+            this.removeArticleFromSavedIfItAdded();
+        }
         this.waitForElementAndClick(
                 SAVE_TO_LIST_BUTTON,
                 "Cannot find and click 'Save to list' button");
+    }
+
+    public void removeArticleFromSavedIfItAdded() {
+        if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)) {
+            this.waitForElementAndClick(
+                    OPTIONS_REMOVE_FROM_MY_LIST_BUTTON,
+                    "Cannot click button to remove article from saved"
+            );
+            this.waitForElementPresent(
+                    OPTIONS_REMOVE_FROM_MY_LIST_BUTTON,
+                    "Cannot find button to add an article to saved list after removing it from this list before",
+                    Duration.ofSeconds(5)
+            );
+        }
     }
 }

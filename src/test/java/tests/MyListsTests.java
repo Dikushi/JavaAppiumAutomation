@@ -2,15 +2,17 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
-import lib.ui.ArticlePageObject;
-import lib.ui.MyListsPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
+
+    private static final String login = "Gsigpwg32";
+    private static final String password = "Gsigpwg32123";
 
     @Test
     public void testSaveFirstArticleToMyList() {
@@ -21,7 +23,7 @@ public class MyListsTests extends CoreTestCase {
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(articleTitle);
-        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        searchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement(articleTitle);
@@ -31,6 +33,20 @@ public class MyListsTests extends CoreTestCase {
         } else {
             articlePageObject.addArticlesToMySaved();
         }
+
+        if (Platform.getInstance().isMW()) {
+            AuthorizationPageObject authorizationPageObject = new AuthorizationPageObject(driver);
+            authorizationPageObject.clickAuthButton();
+            authorizationPageObject.enterLoginData(login, password);
+            authorizationPageObject.submitForm();
+
+            articlePageObject.waitForTitleElement("bject-oriented programming language");
+
+            articlePageObject.addArticlesToMySaved();
+        }
+
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        navigationUI.openNavigation();
 
         MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
 

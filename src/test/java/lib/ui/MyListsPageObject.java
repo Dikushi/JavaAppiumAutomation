@@ -1,7 +1,7 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.time.Duration;
 
@@ -9,9 +9,10 @@ abstract public class MyListsPageObject extends MainPageObject {
 
     protected static String
             FOLDER_BY_NAME_TPL,
-            ARTICLE_BY_TITLE_TPL;
+            ARTICLE_BY_TITLE_TPL,
+            REMOVE_FROM_SAVED_BUTTON;
 
-    public MyListsPageObject(AppiumDriver driver) {
+    public MyListsPageObject(RemoteWebDriver driver) {
         super(driver);
     }
 
@@ -23,6 +24,10 @@ abstract public class MyListsPageObject extends MainPageObject {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", articleTitle);
     }
 
+    private static String getRemoveButtonByTitle(String articleTitle) {
+        return REMOVE_FROM_SAVED_BUTTON.replace("{TITLE}", articleTitle);
+    }
+
     public void openFolderByName(String nameOfFolder) {
         this.waitForElementAndClick(
                 getFolderXpathByName(nameOfFolder),
@@ -32,13 +37,26 @@ abstract public class MyListsPageObject extends MainPageObject {
 
     public void swipeByArticleToDelete(String articleTitle) {
         this.waitForArticleToAppearByTitle(articleTitle);
-        this.swipeElementToLeft(
-                getSavedArticleXpathByTitle(articleTitle),
-                "Cannot find saved article"
-        );
+
+        if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
+            this.swipeElementToLeft(
+                    getSavedArticleXpathByTitle(articleTitle),
+                    "Cannot find saved article"
+            );
+        } else {
+            String removeLocator = getRemoveButtonByTitle(articleTitle);
+            this.waitForElementAndClick(
+                    removeLocator,
+                    "Cannot click button to remove article from saved."
+            );
+        }
 
         if (Platform.getInstance().isIOS()) {
             this.clickElementToTheRightUpperCorner(articleTitle, "Cannot find saved article");
+        }
+
+        if (Platform.getInstance().isMW()) {
+            driver.navigate().refresh();
         }
 
         this.waitForArticleToDisappearByTitle(articleTitle);
