@@ -67,26 +67,57 @@ public class MyListsTests extends CoreTestCase {
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
-        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        searchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
 
-        articlePageObject.addArticleToList(nameOfFolder);
+        if (Platform.getInstance().isMW()) {
+            navigationUI.openNavigation();
 
-        this.navigateBack();
-        this.navigateBack();
-        this.navigateBack();
+            AuthorizationPageObject authorizationPageObject = new AuthorizationPageObject(driver);
+            authorizationPageObject.clickAuthButton();
+            authorizationPageObject.enterLoginData(login, password);
+            authorizationPageObject.submitForm();
 
-        searchPageObject.clickByArticleWithSubstring("High-level programming language");
+            articlePageObject.waitForTitleElement("bject-oriented programming language");
+        }
 
-        articlePageObject.addArticleToListAlreadyCreated(nameOfFolder);
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToList(nameOfFolder);
+        } else {
+            articlePageObject.addArticlesToMySaved();
+        }
+
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isIOS()) {
+            this.navigateBack();
+            this.navigateBack();
+            this.navigateBack();
+        } else {
+            this.driver.navigate().back();
+        }
+
+        searchPageObject.clickByArticleWithSubstring("igh-level programming language");
+
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isIOS()) {
+            articlePageObject.addArticleToListAlreadyCreated(nameOfFolder);
+        } else {
+            articlePageObject.addArticlesToMySaved();
+        }
 
         MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
 
-        myListsPageObject.swipeByArticleToDelete(secondArticleTitle);
-        myListsPageObject.waitForArticleToDisappearByTitle(secondArticleTitle);
-        myListsPageObject.clickOnArticleFromList(firstArticleTitle);
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isIOS()) {
+            myListsPageObject.swipeByArticleToDelete(secondArticleTitle);
+            myListsPageObject.waitForArticleToDisappearByTitle(secondArticleTitle);
+            myListsPageObject.clickOnArticleFromList(firstArticleTitle);
+            articlePageObject.waitForTitleElement(firstArticleTitle);
+        } else {
+            navigationUI.openNavigation();
+            navigationUI.clickMyLists();
 
-        articlePageObject.waitForTitleElement(firstArticleTitle);
+            myListsPageObject.swipeByArticleToDelete(secondArticleTitle);
+            myListsPageObject.waitForArticleToDisappearByTitle(secondArticleTitle);
+        }
     }
 }

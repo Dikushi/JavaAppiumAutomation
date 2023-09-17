@@ -7,7 +7,7 @@ import java.time.Duration;
 public class AuthorizationPageObject extends MainPageObject {
 
     private static final String
-            LOGIN_BUTTON = "xpath://body/div/a[text()='Log in']",
+            LOGIN_BUTTON = "xpath://a/span[text()='Log in']",
             LOGIN_INPUT = "css:input[name='wpName']",
             PASSWORD_INPUT = "css:input[name='wpPassword']",
             SUBMIT_BUTTON = "css:button#wpLoginAttempt";
@@ -18,7 +18,7 @@ public class AuthorizationPageObject extends MainPageObject {
 
     public void clickAuthButton() {
         this.waitForElementPresent(LOGIN_BUTTON, "Cannot find auth button", Duration.ofSeconds(5));
-        this.waitForElementAndClick(LOGIN_BUTTON, "Cannot find and click auth button");
+        this.tryClickElementWithFewAttempts(LOGIN_BUTTON, "Cannot find and click auth button", 10);
     }
 
     public void enterLoginData(String login, String password) {
