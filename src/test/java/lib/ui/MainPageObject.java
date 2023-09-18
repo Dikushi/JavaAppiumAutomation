@@ -4,16 +4,20 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 import lib.Platform;
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -26,6 +30,7 @@ public class MainPageObject {
         this.driver = driver;
     }
 
+    @Step("Waiting for element present")
     public WebElement waitForElementPresent(String locator, String errorMessage, Duration timeoutInSeconds) {
         By by = this.getLocatorByString(locator);
         WebDriverWait webDriverWait = new WebDriverWait(driver, timeoutInSeconds.getSeconds());
@@ -33,18 +38,21 @@ public class MainPageObject {
         return webDriverWait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
+    @Step("Waiting for element present and click")
     public WebElement waitForElementAndClick(String locator, String errorMessage) {
         WebElement element = waitForElementPresent(locator, errorMessage, Duration.ofSeconds(5));
         element.click();
         return element;
     }
 
+    @Step("Waiting for element and send keys")
     public WebElement waitForElementAndSendKeys(String locator, String value, String errorMessage) {
         WebElement element = waitForElementPresent(locator, errorMessage, Duration.ofSeconds(5));
         element.sendKeys(value);
         return element;
     }
 
+    @Step("Waiting for element not present")
     public boolean waitForElementNotPresent(String locator, String errorMessage, Duration timeoutInSeconds) {
         By by = this.getLocatorByString(locator);
         WebDriverWait webDriverWait = new WebDriverWait(driver, timeoutInSeconds.getSeconds());
@@ -52,18 +60,14 @@ public class MainPageObject {
         return webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(by));
     }
 
+    @Step("Waiting for element and clear")
     public WebElement waitForElementAndClear(String locator, String errorMessage, Duration timeoutInSeconds) {
         WebElement webElement = waitForElementPresent(locator, errorMessage, timeoutInSeconds);
         webElement.clear();
         return webElement;
     }
 
-    public boolean assertElementHasText(By by, String expectedText, String errorMessage) {
-        WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(5).getSeconds());
-        webDriverWait.withMessage(errorMessage + "\n");
-        return webDriverWait.until(ExpectedConditions.textToBe(by, expectedText));
-    }
-
+    @Step("Swiping up")
     public void swipeUp(WaitOptions timeOfSwipe) {
         if (driver instanceof AppiumDriver) {
             AppiumDriver driver = (AppiumDriver) this.driver;
@@ -84,6 +88,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Swiping element to left")
     public void swipeElementToLeft(String locator, String errorMessage) {
         if (driver instanceof AppiumDriver) {
             AppiumDriver driver = (AppiumDriver) this.driver;
@@ -116,6 +121,7 @@ public class MainPageObject {
         swipeUp(WaitOptions.waitOptions(Duration.ofMillis(300)));
     }
 
+    @Step("Swiping up to find element")
     public void swipeUpToFindElement(String locator, String errorMessage, int maxSwipes) {
         By by = getLocatorByString(locator);
         int alreadySwiped = 0;
@@ -132,6 +138,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Checking is element is on the screen")
     public boolean isElementLocatedOnTheScreen(String locator) {
         int elementLocationByY = this.waitForElementPresent(locator, "Cannot find element by locator", Duration.ofSeconds(5))
                 .getLocation()
@@ -145,6 +152,7 @@ public class MainPageObject {
         return elementLocationByY < screenSizeByY;
     }
 
+    @Step("Swiping up to element")
     public void swipeUpTillElementAppear(String locator, String errorMessage, int maxSwipes) {
         int alreadySwiped = 0;
 
@@ -158,24 +166,19 @@ public class MainPageObject {
         }
     }
 
+    @Step("Get amount of elements")
     public int getAmountOfElements(String locator) {
         By by = this.getLocatorByString(locator);
         List elements = driver.findElements(by);
         return elements.size();
     }
 
+    @Step("Check element is present")
     public boolean isElementPresent(String locator) {
         return getAmountOfElements(locator) > 0;
     }
 
-    public void assertElementNotPresent(String locator, String errorMessage) {
-        int amountOfElements = getAmountOfElements(locator);
-        if (amountOfElements > 0) {
-            String defaultMessage = "An element '" + locator + "' supposed to be not present";
-            throw new AssertionError(defaultMessage + " " + errorMessage);
-        }
-    }
-
+    @Step("Click to element")
     public void clickElementToTheRightUpperCorner(String locator, String errorMessage) {
         if (driver instanceof AppiumDriver) {
             AppiumDriver driver = (AppiumDriver) this.driver;
@@ -196,6 +199,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Click to element with few attempts")
     public void tryClickElementWithFewAttempts(String locator, String errorMessage, int amountOfAttempts) {
         int currentAttempts = 0;
         boolean needMoreAttempts = true;
@@ -213,6 +217,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Scrolling page to head")
     public void scrollWebPageUp() {
         if (Platform.getInstance().isMW()) {
             JavascriptExecutor javascriptExecutor = driver;
@@ -222,6 +227,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Scrolling to element")
     public void scrollWebPageTillElementNotVisible(String locator, String errorMessage, int maxSwipes) {
         int alreadySwiped = 0;
 
@@ -236,11 +242,7 @@ public class MainPageObject {
         }
     }
 
-    public String waitForElementAndGetAttribute(String locator, String attribute, String errorMessage, long timeoutInSeconds) {
-        WebElement webElement = waitForElementPresent(locator, errorMessage, Duration.ofSeconds(timeoutInSeconds));
-        return webElement.getAttribute(attribute);
-    }
-
+    @Step("Check element is present")
     public void assertElementPresent(String locator, String errorMessage) {
         By by = this.getLocatorByString(locator);
         Assert.assertTrue(errorMessage, driver.findElement(by).isDisplayed());
@@ -260,5 +262,31 @@ public class MainPageObject {
         } else {
             throw new IllegalArgumentException("Cannot get type of locator: Locator: " + locatorWithType);
         }
+    }
+
+    @Step("Take screenshot")
+    public String takeScreenshot(String name) {
+        TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
+        File source = takesScreenshot.getScreenshotAs(OutputType.FILE);
+        String path = System.getProperty("user.dir") + "/" + name + "_screenshot.png";
+        try {
+            FileUtils.copyFile(source, new File(path));
+            System.out.println("The screenshot was taken: " + path);
+        } catch (Exception e) {
+            System.out.println("Cannot take screenshot. Error: " + e.getMessage());
+        }
+        return path;
+    }
+
+    @Attachment
+    public static byte[] screenshot(String path) {
+        byte[] bytes = new byte[0];
+
+        try {
+            bytes = Files.readAllBytes(Path.of(path));
+        } catch (IOException e) {
+            System.out.println("Cannot get bytes from screenshot. Error: " + e.getLocalizedMessage());
+        }
+        return bytes;
     }
 }

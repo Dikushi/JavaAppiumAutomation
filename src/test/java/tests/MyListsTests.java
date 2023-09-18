@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -9,12 +11,18 @@ import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
+@Epic("Tests for my list")
 public class MyListsTests extends CoreTestCase {
 
     private static final String login = "Gsigpwg32";
     private static final String password = "Gsigpwg32123";
 
     @Test
+    @Features(value = {@Feature(value = "Article"), @Feature(value = "Search"), @Feature(value = "List")})
+    @DisplayName("Test save one article to my list")
+    @Description("Save article to my list after search and check article is exist in list")
+    @Step("Starting test testSaveFirstArticleToMyList()")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSaveFirstArticleToMyList() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
@@ -58,6 +66,11 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value = {@Feature(value = "Article"), @Feature(value = "Search"), @Feature(value = "List")})
+    @DisplayName("Test save two article to my list and delete one")
+    @Description("Save article to my list after search then add another one, check list to delete one of them")
+    @Step("Starting test testSaveToFavoriteTwoArticles()")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSaveToFavoriteTwoArticles() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 

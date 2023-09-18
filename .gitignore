@@ -6,3 +6,5 @@ apks
 apps
 target
 ci-scripts
+.allure
+*.png

@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -28,6 +29,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         return REMOVE_FROM_SAVED_BUTTON.replace("{TITLE}", articleTitle);
     }
 
+    @Step("Open folder by name {nameOfFolder}")
     public void openFolderByName(String nameOfFolder) {
         this.waitForElementAndClick(
                 getFolderXpathByName(nameOfFolder),
@@ -35,6 +37,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    @Step("Swiping article to delete")
     public void swipeByArticleToDelete(String articleTitle) {
         this.waitForArticleToAppearByTitle(articleTitle);
 
@@ -62,6 +65,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         this.waitForArticleToDisappearByTitle(articleTitle);
     }
 
+    @Step("Waiting for article appear")
     public void waitForArticleToAppearByTitle(String articleTitle) {
         this.waitForElementPresent(
                 getSavedArticleXpathByTitle(articleTitle),
@@ -70,6 +74,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    @Step("Waiting for article disappear")
     public void waitForArticleToDisappearByTitle(String articleTitle) {
         this.waitForElementNotPresent(
                 getSavedArticleXpathByTitle(articleTitle),
@@ -78,6 +83,7 @@ abstract public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    @Step("Click on article from list")
     public void clickOnArticleFromList(String articleTitle) {
         this.waitForElementAndClick(
                 getSavedArticleXpathByTitle(articleTitle),

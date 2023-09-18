@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.time.Duration;
@@ -19,6 +20,7 @@ public class WelcomePageObject extends MainPageObject {
         super(driver);
     }
 
+    @Step("Waiting for link 'learn more'")
     public void waitForLearnMoreLink() {
         this.waitForElementPresent(
                 STEP_LEARN_MORE_LINK,
@@ -26,12 +28,14 @@ public class WelcomePageObject extends MainPageObject {
                 Duration.ofSeconds(10));
     }
 
+    @Step("Click on 'next' button")
     public void clickNextButton() {
         this.waitForElementAndClick(
                 NEXT_LINK,
                 "Cannot find and click 'Далее' button");
     }
 
+    @Step("Waiting for 'new way to explore' text")
     public void waitForNewWayToExploreText() {
         this.waitForElementPresent(
                 STEP_NEW_WAYS_TO_EXPLORE_TEXT,
@@ -39,6 +43,7 @@ public class WelcomePageObject extends MainPageObject {
                 Duration.ofSeconds(10));
     }
 
+    @Step("Wait for add or edit preferred lang")
     public void waitForAddOrEditPreferredLangText() {
         this.waitForElementPresent(
                 STEP_ADD_OR_EDIT_PREFERRED_LANG_LINK,
@@ -46,6 +51,7 @@ public class WelcomePageObject extends MainPageObject {
                 Duration.ofSeconds(10));
     }
 
+    @Step("Waiting for text about data collection")
     public void waitForLearnMoreAboutDataCollectedText() {
         this.waitForElementPresent(
                 STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK,
@@ -53,12 +59,14 @@ public class WelcomePageObject extends MainPageObject {
                 Duration.ofSeconds(10));
     }
 
+    @Step("Click on 'get started' button")
     public void clickGetStartedButton() {
         this.waitForElementAndClick(
                 GET_STARTED_BUTTON,
                 "Cannot find 'Начать' button");
     }
 
+    @Step("Click on 'skip' button")
     public void clickSkip() {
         this.waitForElementAndClick(
                 SKIP,

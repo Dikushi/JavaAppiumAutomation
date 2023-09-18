@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -27,11 +28,14 @@ abstract public class ArticlePageObject extends MainPageObject {
         return TITLE.replace("{SUBSTRING}", substring);
     }
 
+    @Step("Waiting for title on the article page")
     public WebElement waitForTitleElement(String substring) {
+        screenshot(this.takeScreenshot("article_title"));
         String titleWithSubstring = getTitleElement(substring);
         return this.waitForElementPresent(titleWithSubstring, "Cannot find article title on page", Duration.ofSeconds(15));
     }
 
+    @Step("Swiping to footer on article page")
     public void swipeToFooter() {
         if (Platform.getInstance().isAndroid()) {
             this.swipeUpToFindElement(
@@ -51,6 +55,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
     }
 
+    @Step("Adding the article to my list")
     public void addArticleToList(String nameOfFolder) {
         this.waitForElementAndClick(
                 SAVE_TO_LIST_BUTTON,
@@ -85,6 +90,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         );
     }
 
+    @Step("Adding article to exist list")
     public void addArticleToListAlreadyCreated(String nameOfFolder) {
         this.waitForElementAndClick(
                 SAVE_TO_LIST_BUTTON,
@@ -107,6 +113,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         );
     }
 
+    @Step("Assert title is present")
     public void assertTitleIsPresent() {
         this.assertElementPresent(
                 TITLE_LOCATOR,
@@ -114,6 +121,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         );
     }
 
+    @Step("Adding the article to my saved articles")
     public void addArticlesToMySaved() {
         if (Platform.getInstance().isMW()) {
             this.removeArticleFromSavedIfItAdded();
@@ -123,6 +131,7 @@ abstract public class ArticlePageObject extends MainPageObject {
                 "Cannot find and click 'Save to list' button");
     }
 
+    @Step("Removing the article from saved if it has been added")
     public void removeArticleFromSavedIfItAdded() {
         if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)) {
             this.waitForElementAndClick(
