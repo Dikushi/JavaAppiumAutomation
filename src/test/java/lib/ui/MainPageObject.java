@@ -30,6 +30,18 @@ public class MainPageObject {
         this.driver = driver;
     }
 
+    @Attachment
+    public static byte[] screenshot(String path) {
+        byte[] bytes = new byte[0];
+
+        try {
+            bytes = Files.readAllBytes(Path.of(path));
+        } catch (IOException e) {
+            System.out.println("Cannot get bytes from screenshot. Error: " + e.getLocalizedMessage());
+        }
+        return bytes;
+    }
+
     @Step("Waiting for element present")
     public WebElement waitForElementPresent(String locator, String errorMessage, Duration timeoutInSeconds) {
         By by = this.getLocatorByString(locator);
@@ -266,7 +278,7 @@ public class MainPageObject {
 
     @Step("Take screenshot")
     public String takeScreenshot(String name) {
-        TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
+        TakesScreenshot takesScreenshot = driver;
         File source = takesScreenshot.getScreenshotAs(OutputType.FILE);
         String path = System.getProperty("user.dir") + "/" + name + "_screenshot.png";
         try {
@@ -276,17 +288,5 @@ public class MainPageObject {
             System.out.println("Cannot take screenshot. Error: " + e.getMessage());
         }
         return path;
-    }
-
-    @Attachment
-    public static byte[] screenshot(String path) {
-        byte[] bytes = new byte[0];
-
-        try {
-            bytes = Files.readAllBytes(Path.of(path));
-        } catch (IOException e) {
-            System.out.println("Cannot get bytes from screenshot. Error: " + e.getLocalizedMessage());
-        }
-        return bytes;
     }
 }

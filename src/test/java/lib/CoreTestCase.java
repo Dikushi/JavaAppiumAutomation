@@ -2,7 +2,6 @@ package lib;
 
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
-import junit.framework.TestCase;
 import lib.ui.WelcomePageObject;
 import org.junit.After;
 import org.junit.Before;
